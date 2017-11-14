@@ -1,16 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pencilprinter;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.ServerSocket;
-import java.net.UnknownHostException;
 
 /**
  *
@@ -24,12 +16,23 @@ public class Pencilprinter {
         String hostName = "localhost";
         int hostPort = 4444;
         
-        //Temp String for data to send to PLC
-        String message = "tester2";
+        //Temp String for data to send to PLC/JAVA-server
+        int[] message = new int[10];
+        
+        for (int i = 0; i < 10; i++) {
+            
+            message[i] = i;
+            System.out.println(i);
+            
+        }
 
             Socket echoSocket = new Socket(hostName, hostPort);
             
-            echoSocket.getOutputStream().write(message.getBytes("UTF-8"));
+            ObjectOutputStream out = new ObjectOutputStream(echoSocket.getOutputStream());
+            
+            out.writeObject(message);
+            
+            //echoSocket.getOutputStream().write(message.getBytes("UTF-8"));
 
     }
 
