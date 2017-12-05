@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pencilprinter;
 
 import org.apache.batik.transcoder.image.PNGTranscoder;
@@ -45,21 +40,19 @@ public class ReadImage {
                     //System.out.println("To draw or not to draw? " + toDraw[y][x]);
                 }
             }
-            //resetDrawing(toDraw,imageHeight,imageWidth);
             testDraw(toDraw, imageHeight, imageWidth);
         } catch (Exception e) {
             System.out.println(e.toString());
             System.out.println(e.getMessage());
         }
-
     }
 
     public void testDraw(boolean[][] pixelsToDraw, int imageHeight, int imageWidth) {
         BufferedImage outputBi;
         File outputImage = new File("C:\\Users\\For eksempel Johnny\\Desktop\\outputbitmap.bmp");
+        
         try {
             outputBi = ImageIO.read(outputImage);
-
             for (int y1 = 0; y1 < imageHeight; y1++) {
                 for (int x1 = 0; x1 < imageWidth; x1++) {
                     if (pixelsToDraw[y1][x1] == true) {
