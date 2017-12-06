@@ -3,7 +3,9 @@ package javatcpclient;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.DataOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.logging.Level;
@@ -35,38 +37,23 @@ public class tcpMngr {
     
     
     public boolean tcpConnect() {
-        
-        try {
-            boolean success = false;            
-            boolean toDraw[] = new boolean[250];
-            byte bytes[] = new byte[250];
-            bytes[0] = 1;
-            bytes[1] = 0;
-            toDraw[0] = true;
-            toDraw[1] = true;
-            String test = "112221111222535325";
+       
+        boolean success = false;  
+        try {          
+            byte bytes[] = new byte[32];
+            bytes[0] = (byte) 255;
+            bytes[1] = (byte) 1;
+            bytes[2] = (byte) 128;
+            bytes[3] = (byte) 127;
+            bytes[4] = (byte) 254;
+            bytes[5] = (byte) 99;
+            bytes[6] = (byte) 74;
             //creating a new socket with given credentials
             plcSocket = new Socket(hostName, hostPort);
-            //Then it runs a while loop until the host/PLC sends a bool
-            //set to 'true' back.
-            //while (!success) {
-                ObjectOutputStream out = new ObjectOutputStream(plcSocket.getOutputStream());
-                //DataOutputStream out = new DataOutputStream(plcSocket.getOutputStream());
-                //DataInputStream in = new DataInputStream(plcSocket.getInputStream());
-                System.out.println("socket open");
-                //out.writeBoolean(true);
-                //out.write(toDraw);
-                //out.writeBoolean(false);
-                //out.write(test.getBytes("US-ASCII"));
-                out.writeChar(1);
+            success = true;
+                DataOutputStream out = new DataOutputStream(plcSocket.getOutputStream());
+                out.write(bytes);
                 out.flush();
-                out.close();
-                //in.close();
-                System.out.println("er vi her???");
-                //Changing 'success' from the default 'false' to 'true'
-                //success = in.readBoolean();
-                
-            //}            
             try {
                 plcSocket.close();
             }
