@@ -15,7 +15,9 @@ public class PencilPrinter {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        
+        //Check lige op på et smartere class-digram, du
+        
     }
     
 }

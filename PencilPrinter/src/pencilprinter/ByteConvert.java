@@ -1,10 +1,9 @@
 package pencilprinter;
 
-/**
- *
- * @author emil
- */
+
 public class ByteConvert {
+    
+    //COMMENTS!!!
 
     //Some tmp vars for storing wile traversing
     byte tmpByte = 0;
@@ -35,13 +34,8 @@ public class ByteConvert {
                 forInt = (hasValue * ((int) Math.pow(2, bitInByteNr - 1)));
                 finInt += forInt;
                 
-                
-                //System.out.println("Bit nr.: "+j+" Bit in byte nr.: "+bitInByteNr+" Bit val.: "+hasValue);
-                //System.out.println("Add to byte: "+forInt+" Byte value: "+finInt);
-                
-                
             }
-            //System.out.println("finInt i 32-loop: "+finInt);
+
             arrayToSend[i] = (byte)  finInt;
                 xStep += 8;
 

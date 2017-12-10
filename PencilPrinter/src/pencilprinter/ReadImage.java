@@ -50,9 +50,12 @@ public class ReadImage {
         }
 
     }
+    
+    // Skal slettes?
 
     public void testDraw(boolean[][] pixelsToDraw, int imageHeight, int imageWidth) {
         BufferedImage outputBi;
+        //Use relative path for this:
         File outputImage = new File("C:\\Users\\Maciej\\Desktop\\test\\1234.jpg");
         try {
             outputBi = ImageIO.read(outputImage);
@@ -69,6 +72,8 @@ public class ReadImage {
             System.out.println(e.toString());
         }
     }
+    
+    // Slet slut ?
 
     public String svg2png(String filepath) {
         //Step -1: We read the input SVG document into Transcoder Input

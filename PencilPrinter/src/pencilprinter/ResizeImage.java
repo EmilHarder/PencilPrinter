@@ -11,6 +11,7 @@ public class ResizeImage {
     
     private static int desiredResolution = 250;
     public static void main(String[]args) {
+        //Use relative path for these:
         File pngOriginal = new File("C:\\Users\\Maciej\\documents\\NetbeansProjects\\Readingimages\\chessboard.png");
         File pngResized = new File("C:\\Users\\Maciej\\documents\\NetBeansProjects\\ReadingImages\\resized.png");
         resizeImage(pngOriginal,pngResized,"png");
@@ -41,6 +42,7 @@ public class ResizeImage {
             System.out.println("\n"+ratio);
             System.out.println("\n"+resizedImageHeight+" "+resizedImageWidth);
             System.out.println(original.getType());
+            //Maybe to simply return a BufferedImage instead of writing a file?
             BufferedImage resized = new BufferedImage ((int)resizedImageWidth, (int)resizedImageHeight, original.getType());
             Graphics2D g2 = resized.createGraphics();
             g2.drawImage(original, 0, 0, (int)resizedImageWidth, (int)resizedImageHeight, null);
