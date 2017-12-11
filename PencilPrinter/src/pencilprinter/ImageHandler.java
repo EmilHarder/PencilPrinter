@@ -13,8 +13,6 @@ import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
-
-import java.awt.Graphics2D;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -74,55 +72,39 @@ public class ImageHandler {
         return bufferedImg;
     }
     
-    public void resizeImage(int desRes){
+    /**
+     * Method for resizing image. This could (should?) be a part of readImage().
+     * @param desRes The desired resolution for the image to print
+     * @param originalImage The buffered image from readImage()
+     * @return Returns the resized BufferedImage
+     */
+    public BufferedImage resizeImage(int desRes, BufferedImage originalImage){
 
-        int desiredResolution = desRes;
-
-        File pngOriginal = new File("C:\\Users\\Maciej\\documents\\NetbeansProjects\\Readingimages\\aminosyrer-ConvertImage.tiff");
-        File pngResized = new File("C:\\Users\\Maciej\\documents\\NetBeansProjects\\ReadingImages\\resized.png");
-        String originalFilePath = pngOriginal.getAbsolutePath().toLowerCase();
-        System.out.println(originalFilePath);
-        String originalFormat = originalFilePath.substring(originalFilePath.lastIndexOf(".") + 1);
-        System.out.println(originalFormat);
-        resizeImage(pngOriginal, pngResized, originalFormat);
-        
-    }
-
-    private static void resizeImage(File originalImage, File resizedImage, String format) {
-        try {
-            BufferedImage original = ImageIO.read(originalImage);
-            double imageHeight = original.getHeight();
-            double imageWidth = original.getWidth();
-            double resizedImageHeight;
-            double resizedImageWidth;
-            double ratio;
-            System.out.println(imageHeight + " " + imageWidth);
-            if (imageHeight > imageWidth) {
-                ratio = desiredResolution / (double) imageHeight;
-                resizedImageHeight = ratio * imageHeight;
-                resizedImageWidth = ratio * imageWidth;
-            } else {
-                ratio = desiredResolution / (double) imageWidth;
-                resizedImageWidth = ratio * imageWidth;
-                resizedImageHeight = ratio * imageHeight;
-            }
-            System.out.println("\n" + ratio);
-            System.out.println("\n" + resizedImageHeight + " " + resizedImageWidth);
-            System.out.println(original.getType());
-            BufferedImage resized;
-            if (original.getType() != 0) {
-                resized = new BufferedImage((int) resizedImageWidth, (int) resizedImageHeight, original.getType());
-            } else {
-                resized = new BufferedImage((int) resizedImageWidth, (int) resizedImageHeight, 2);
-            }
-            Graphics2D g2 = resized.createGraphics();
-            g2.drawImage(original, 0, 0, (int) resizedImageWidth, (int) resizedImageHeight, null);
-            g2.dispose();
-            ImageIO.write(resized, format, resizedImage);
-        } catch (IOException ex) {
-            ex.printStackTrace(System.out);
-
+        double imageHeight = originalImage.getHeight();
+        double imageWidth = originalImage.getWidth();
+        double resizedImageHeight;
+        double resizedImageWidth;
+        double ratio;
+        System.out.println(imageHeight + " " + imageWidth);
+        if (imageHeight > imageWidth) {
+            ratio = desRes / (double) imageHeight;
+            resizedImageHeight = ratio * imageHeight;
+            resizedImageWidth = ratio * imageWidth;
+        } else {
+            ratio = desRes / (double) imageWidth;
+            resizedImageWidth = ratio * imageWidth;
+            resizedImageHeight = ratio * imageHeight;
         }
+        System.out.println("\n" + ratio);
+        System.out.println("\n" + resizedImageHeight + " " + resizedImageWidth);
+        System.out.println(originalImage.getType());
+        BufferedImage resized;
+        if (originalImage.getType() != 0) {
+            resized = new BufferedImage((int) resizedImageWidth, (int) resizedImageHeight, originalImage.getType());
+        } else {
+            resized = new BufferedImage((int) resizedImageWidth, (int) resizedImageHeight, 2);
+        }
+            return resized;
     }
 
     /**

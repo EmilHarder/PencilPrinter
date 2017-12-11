@@ -34,6 +34,8 @@ public class PencilPrinter {
         String filetype;
         
     //Vars for image handling
+        //resolution holds the desired resolution as a int
+        int resolution = 256;
         //bufferImage holds the read image file as a BufferedImage
         BufferedImage bufferImage;
         //boolArray[][] holds the pixel-info of the processed image as array of
@@ -91,9 +93,8 @@ public class PencilPrinter {
             bufferImage = imageHandler.readImage(filepath);
         }
         
+        boolArray = imageHandler.img2BoolArray(imageHandler.resizeImage(resolution, bufferImage));
         
-        
-        /*
         //Opening the connection
         tcpClient.connect();
         
@@ -125,7 +126,7 @@ public class PencilPrinter {
         }
         
         //When done, disconnect
-        tcpClient.disconnect();*/
+        tcpClient.disconnect();
         
     }
     
