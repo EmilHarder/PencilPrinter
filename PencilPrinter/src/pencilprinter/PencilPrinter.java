@@ -5,6 +5,7 @@
  */
 package pencilprinter;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +25,17 @@ public class PencilPrinter {
      */
     public static void main(String[] args) {
         
-    //Vars
+    //Vars for file handling
+        //filepath holds the path to the image as a String
+        String filepath;
+        //The input file is stored as a File
+        File inputfile;
+        //filetype stores the file type as a String
+        String filetype;
+        
+    //Vars for image handling
+        //bufferImage holds the read image file as a BufferedImage
+        BufferedImage bufferImage;
         //boolArray[][] holds the pixel-info of the processed image as array of
         //rows of pixels
         boolean[][] boolArray;
@@ -32,6 +43,12 @@ public class PencilPrinter {
         boolean boolArrayRow[];        
         //tmpByte[] holds pixel-information of a row of pixels in bytes
         byte tmpByte[];
+        
+    //Vars for tcp handling
+        //hostName stores the name/IP of the host to connect to as a String
+        String host = "localhost";
+        //hostPort stores the port number for the tcp host as a int
+        int hostPort = 4444;
 
     //Constructors:
         
@@ -40,35 +57,42 @@ public class PencilPrinter {
         TmpBool tmpBool = new TmpBool();
         boolArray = tmpBool.tmpBoolArray();
 //TEMP      
+
+        //Constructor for the method to connect the TCP socket
+        //Setting the hostname/IP and port to use.
+        TcpClient tcpClient = new TcpClient(host, hostPort);
         
         //Constructor for the method to convert the incoming boolArray,
         //to byte array.
         ByteConvert byteConvert = new ByteConvert();
-
-        //Constructor for the method to connect the TCP socket
-        //Setting the hostname/IP and port to use.
-        TcpClient tcpClient = new TcpClient("localhost", 4444);
         
-        //image cons
-        ReadImage readImage = new ReadImage();
+        //Constructors for choosing file (img) to read
         JFileChooser fileChooser = new JFileChooser();
         
-        //When reading the image
+        //Constructor for the class that handles reading and scaling of the
+        //image and converting it to a bool[][]
+        ImageHandler imageHandler = new ImageHandler();
+        
+    //Choosing the file (img) to print. If the file is .svg, it is converted to
+    //a png, and send to readImage. If not, the image is send to readImage.
+    //Should'n we instead just use a buffered image?
         
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.showOpenDialog(fileChooser);
         
-        File inputfile = fileChooser.getSelectedFile();
-        String path = inputfile.getAbsolutePath().toLowerCase();
-        String filetype = path.substring(path.lastIndexOf(".")+1);
+        inputfile = fileChooser.getSelectedFile();
+        filepath = inputfile.getAbsolutePath().toLowerCase();
+        filetype = filepath.substring(filepath.lastIndexOf(".")+1);
         
-        if ("svg".equals(filetype))
-        {
-            String opp = readImage.svg2png(path);
-            readImage.readBmpImage(opp);
-        }else{
-            readImage.readBmpImage(path);
+        if ("svg".equals(filetype)){
+            String pngFilePath = imageHandler.svg2png(filepath);
+            bufferImage = imageHandler.readImage(pngFilePath);
+        } else {
+            bufferImage = imageHandler.readImage(filepath);
         }
+        
+        
+        
         /*
         //Opening the connection
         tcpClient.connect();
