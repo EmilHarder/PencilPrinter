@@ -17,6 +17,7 @@ import org.apache.batik.transcoder.image.PNGTranscoder;
 public class ReadImage {
 
     public ReadImage() {
+        //?
     }
 
     public void readBmpImage(String filepath) {
@@ -42,8 +43,6 @@ public class ReadImage {
                     //System.out.println("To draw or not to draw? " + toDraw[y][x]);
                 }
             }
-            //resetDrawing(toDraw,imageHeight,imageWidth);
-            testDraw(toDraw, imageHeight, imageWidth);
         } catch (IOException e) {
             System.out.println(e.toString());
             System.out.println(e.getMessage());
@@ -51,29 +50,29 @@ public class ReadImage {
 
     }
     
-    // Skal slettes?
-
+    /*// Skal slettes?
+    
     public void testDraw(boolean[][] pixelsToDraw, int imageHeight, int imageWidth) {
-        BufferedImage outputBi;
-        //Use relative path for this:
-        File outputImage = new File("C:\\Users\\Maciej\\Desktop\\test\\1234.jpg");
-        try {
-            outputBi = ImageIO.read(outputImage);
-
-            for (int y1 = 0; y1 < imageHeight; y1++) {
-                for (int x1 = 0; x1 < imageWidth; x1++) {
-                    if (pixelsToDraw[y1][x1] == true) {
-                        outputBi.setRGB(x1, y1, 0);
-                    }
-                }
-            }
-            ImageIO.write(outputBi, "png", outputImage);
-        } catch (IOException e) {
-            System.out.println(e.toString());
-        }
+    BufferedImage outputBi;
+    //Use relative path for this:
+    File outputImage = new File("C:\\Users\\Maciej\\Desktop\\test\\1234.jpg");
+    try {
+    outputBi = ImageIO.read(outputImage);
+    
+    for (int y1 = 0; y1 < imageHeight; y1++) {
+    for (int x1 = 0; x1 < imageWidth; x1++) {
+    if (pixelsToDraw[y1][x1] == true) {
+    outputBi.setRGB(x1, y1, 0);
+    }
+    }
+    }
+    ImageIO.write(outputBi, "png", outputImage);
+    } catch (IOException e) {
+    System.out.println(e.toString());
+    }
     }
     
-    // Slet slut ?
+    // Slet slut ?*/
 
     public String svg2png(String filepath) {
         //Step -1: We read the input SVG document into Transcoder Input
