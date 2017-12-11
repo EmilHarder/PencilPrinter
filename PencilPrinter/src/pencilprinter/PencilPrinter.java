@@ -53,12 +53,12 @@ public class PencilPrinter {
         int hostPort = 4444;
 
     //Constructors:
-        
-//TEMP    
+    
+        /*
         //Creates a tmp boolean[][] for testing
         TmpBool tmpBool = new TmpBool();
         boolArray = tmpBool.tmpBoolArray();
-//TEMP      
+        */  
 
         //Constructor for the method to connect the TCP socket
         //Setting the hostname/IP and port to use.
