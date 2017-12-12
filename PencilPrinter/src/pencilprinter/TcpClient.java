@@ -57,11 +57,8 @@ public class TcpClient {
      */
     public void write(byte[] message) throws IOException {
         if (isConnected()) {
-            
             out.write(message);
             out.flush();
-            
-            
         }
     }
 

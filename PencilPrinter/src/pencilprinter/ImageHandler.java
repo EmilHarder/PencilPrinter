@@ -1,5 +1,6 @@
 package pencilprinter;
 
+import java.awt.Graphics2D;
 import java.nio.file.Paths;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -82,6 +83,8 @@ public class ImageHandler {
      */
     public BufferedImage resizeImage(int desRes, BufferedImage originalImage) {
 
+        System.out.println(originalImage);
+
         double imageHeight = originalImage.getHeight();
         double imageWidth = originalImage.getWidth();
         double resizedImageHeight;
@@ -102,6 +105,13 @@ public class ImageHandler {
         } else {
             resized = new BufferedImage((int) resizedImageWidth, (int) resizedImageHeight, 2);
         }
+        
+    Graphics2D g = resized.createGraphics();  /*
+    g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+    RenderingHints.VALUE_INTERPOLATION_BILINEAR);  */
+    g.drawImage(originalImage, 0, 0, (int) resizedImageWidth, (int) resizedImageHeight, 0, 0, (int) imageWidth, (int) imageHeight, null);  
+    g.dispose();  
+    
         return resized;
     }
 
@@ -122,12 +132,13 @@ public class ImageHandler {
                     if (x >= imageWidth) {
                         boolArray[y][x] = false;
                     } else {
-                    int pixelRGB = bufferedImg.getRGB(x, y);
-                    int alpha = pixelRGB >> 24 & 255;
-                    int red = pixelRGB >> 16 & 255;
-                    int green = pixelRGB >> 8 & 255;
-                    int blue = pixelRGB & 255;
-                    boolArray[y][x] = !(red > threshold && blue > threshold && green > threshold) && (alpha > alphaThreshold);
+                        int pixelRGB = bufferedImg.getRGB(x, y);
+                        int alpha = pixelRGB >> 24 & 255;
+                        int red = pixelRGB >> 16 & 255;
+                        int green = pixelRGB >> 8 & 255;
+                        int blue = pixelRGB & 255;
+                        boolArray[y][x] = !(red > threshold && blue > threshold && green > threshold) && (alpha > alphaThreshold);
+                        //    System.out.println("op"+y+pixelRGB);
                     }
                 }
             } else {
@@ -135,12 +146,13 @@ public class ImageHandler {
                     if (x >= imageWidth) {
                         boolArray[y][x] = false;
                     } else {
-                    int pixelRGB = bufferedImg.getRGB(x, y);
-                    int alpha = pixelRGB >> 24 & 255;
-                    int red = pixelRGB >> 16 & 255;
-                    int green = pixelRGB >> 8 & 255;
-                    int blue = pixelRGB & 255;
-                    boolArray[y][x] = !(red > threshold && blue > threshold && green > threshold) && (alpha > alphaThreshold);
+                        int pixelRGB = bufferedImg.getRGB(x, y);
+                        int alpha = pixelRGB >> 24 & 255;
+                        int red = pixelRGB >> 16 & 255;
+                        int green = pixelRGB >> 8 & 255;
+                        int blue = pixelRGB & 255;
+                        boolArray[y][x] = !(red > threshold && blue > threshold && green > threshold) && (alpha > alphaThreshold);
+                        //System.out.println("ned"+y+pixelRGB);
                     }
 
                 }

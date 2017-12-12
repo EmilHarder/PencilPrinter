@@ -93,50 +93,62 @@ public class PencilPrinter {
         } else {
             bufferImage = imageHandler.readImage(filepath);
         }
+        
+
+        
+        //System.out.println(tmpImg);
 
         //Now storing the buffered image in a boolean[][], values determined by
         //the vars resolution, threshold and alphaThreshold
         boolArray = imageHandler.img2BoolArray(imageHandler.resizeImage(resolution, bufferImage), threshold, alphaThreshold);
-
+        /*
+        for (int i = 0; i < 32; i++){
+        boolArrayRow = boolArray[i];
+        for (int j = 0; j < 64; j++) {
+        System.out.println("i,j="+i+","+j);
+        System.out.println(boolArrayRow[j]);
+        
+        }
+        }*/
+        
+        
         //This for loop traverses each row in boolArray[][], converts it to
         //byte[] via byteConvert and send it with tcpClient.write()
         for (int i = 0; i < boolArray.length; i++) {
-            boolArrayRow = boolArray[i];
-            //Converting the boolArray
-            tmpByte = byteConvert.boolToByte(boolArrayRow);
-
-            try {
-
-                //Opening the connection
-                tcpClient.connect();
-
-                //While loop "stalls" until the connection is open and
-                //tcpClient.isconnected() returns true
-                while (!tcpClient.isConnected()) {
-
-                    //Doin nothing
-                }
-                //Now writing the returning byteArray to the output stream of the
-                //tcp socket
-                tcpClient.write(tmpByte);
-
-                //When done, disconnect
-                tcpClient.disconnect();
-
-                //System.out.println("return fra boolToByte"+Arrays.toString(tmpByte));
-            } catch (IOException ex) {
-                System.out.println("Could not send image to PLC. Se log for details.");
-                Logger.getLogger(PencilPrinter.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(PencilPrinter.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            System.out.println("row: " + i);
-
+        boolArrayRow = boolArray[i];
+        //Converting the boolArray
+        tmpByte = byteConvert.boolToByte(boolArrayRow);
+        
+        try {
+        
+        //Opening the connection
+        tcpClient.connect();
+        
+        //While loop "stalls" until the connection is open and
+        //tcpClient.isconnected() returns true
+        while (!tcpClient.isConnected()) {
+        
+        //Doin nothing
+        }
+        //Now writing the returning byteArray to the output stream of the
+        //tcp socket
+        tcpClient.write(tmpByte);
+        
+        //When done, disconnect
+        tcpClient.disconnect();
+        
+        //System.out.println("return fra boolToByte"+Arrays.toString(tmpByte));
+        } catch (IOException ex) {
+        System.out.println("Could not send image to PLC. Se log for details.");
+        Logger.getLogger(PencilPrinter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*try {
+        Thread.sleep(10);
+        } catch (InterruptedException ex) {
+        Logger.getLogger(PencilPrinter.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        
         }
 
     }
