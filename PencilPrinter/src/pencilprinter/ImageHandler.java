@@ -85,7 +85,7 @@ public class ImageHandler {
         double resizedImageHeight;
         double resizedImageWidth;
         double ratio;
-        System.out.println(imageHeight + " " + imageWidth);
+        //System.out.println(imageHeight + " " + imageWidth);
         if (imageHeight > imageWidth) {
             ratio = desRes / (double) imageHeight;
             resizedImageHeight = ratio * imageHeight;
@@ -95,9 +95,9 @@ public class ImageHandler {
             resizedImageWidth = ratio * imageWidth;
             resizedImageHeight = ratio * imageHeight;
         }
-        System.out.println("\n" + ratio);
+        /*System.out.println("\n" + ratio);
         System.out.println("\n" + resizedImageHeight + " " + resizedImageWidth);
-        System.out.println(originalImage.getType());
+        System.out.println(originalImage.getType());*/
         BufferedImage resized;
         if (originalImage.getType() != 0) {
             resized = new BufferedImage((int) resizedImageWidth, (int) resizedImageHeight, originalImage.getType());
@@ -112,10 +112,7 @@ public class ImageHandler {
      * @param bufferedImg The buffered image to "convert"
      * @return Returns a boolean[][] with info for each pixel.
      */
-    public boolean[][] img2BoolArray(BufferedImage bufferedImg) {
-        
-        int threshold = 50;
-        int alphaThreshold = 10;
+    public boolean[][] img2BoolArray(BufferedImage bufferedImg, int threshold, int alphaThreshold) {
             
             int imageHeight = bufferedImg.getHeight();
             int imageWidth = bufferedImg.getWidth();

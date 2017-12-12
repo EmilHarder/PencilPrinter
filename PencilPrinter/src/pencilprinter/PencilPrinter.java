@@ -36,6 +36,10 @@ public class PencilPrinter {
     //Vars for image handling
         //resolution holds the desired resolution as a int
         int resolution = 256;
+        //threshold sets the value as of when a pixel is thought of as "black" as a int
+        int threshold = 50;
+        //alphaThreshold sets the value as of when a "transparent" pixel is thought of as not transparent.
+        int alphaThreshold = 10;
         //bufferImage holds the read image file as a BufferedImage
         BufferedImage bufferImage;
         //boolArray[][] holds the pixel-info of the processed image as array of
@@ -93,7 +97,9 @@ public class PencilPrinter {
             bufferImage = imageHandler.readImage(filepath);
         }
         
-        boolArray = imageHandler.img2BoolArray(imageHandler.resizeImage(resolution, bufferImage));
+        //Now storing the buffered image in a boolean[][], values determined by
+        //the vars resolution, threshold and alphaThreshold
+        boolArray = imageHandler.img2BoolArray(imageHandler.resizeImage(resolution, bufferImage), threshold, alphaThreshold);
         
         //Opening the connection
         tcpClient.connect();
