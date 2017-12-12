@@ -85,7 +85,6 @@ public class ImageHandler {
         double resizedImageHeight;
         double resizedImageWidth;
         double ratio;
-        //System.out.println(imageHeight + " " + imageWidth);
         if (imageHeight > imageWidth) {
             ratio = desRes / (double) imageHeight;
             resizedImageHeight = ratio * imageHeight;
@@ -95,9 +94,6 @@ public class ImageHandler {
             resizedImageWidth = ratio * imageWidth;
             resizedImageHeight = ratio * imageHeight;
         }
-        /*System.out.println("\n" + ratio);
-        System.out.println("\n" + resizedImageHeight + " " + resizedImageWidth);
-        System.out.println(originalImage.getType());*/
         BufferedImage resized;
         if (originalImage.getType() != 0) {
             resized = new BufferedImage((int) resizedImageWidth, (int) resizedImageHeight, originalImage.getType());
