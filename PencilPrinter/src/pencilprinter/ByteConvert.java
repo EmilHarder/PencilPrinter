@@ -24,15 +24,18 @@ public class ByteConvert {
             
             bitInByteNr = 0;
             finInt = 0;
+            
 
             for (int j = xStep; j < xStep + 8; j++) {
-
+                
+            //System.out.println(boolArray[j]);
                 hasValue = (boolArray[j]) ? 1 : 0;
                 
                 bitInByteNr ++;
                 
                 forInt = (hasValue * ((int) Math.pow(2, bitInByteNr - 1)));
                 finInt += forInt;
+                
                 
             }
 

@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.io.File;
+import java.util.Arrays;
 import javax.swing.JFileChooser;
 
 
@@ -101,6 +102,7 @@ public class PencilPrinter {
         //the vars resolution, threshold and alphaThreshold
         boolArray = imageHandler.img2BoolArray(imageHandler.resizeImage(resolution, bufferImage), threshold, alphaThreshold);
         
+        /*
         //Opening the connection
         tcpClient.connect();
         
@@ -110,15 +112,15 @@ public class PencilPrinter {
         
         //Doin nothing
         
-        }
+        }*/
         
         //This for loop traverses each row in boolArray[][], converts it to
         //byte[] via byteConvert and send it with tcpClient.write()
         for (int i = 0; i < boolArray.length; i++) {
-        boolArrayRow = boolArray[i];
+            boolArrayRow = boolArray[i];
         //Converting the boolArray
-        tmpByte = byteConvert.boolToByte(boolArrayRow);
-        
+            tmpByte = byteConvert.boolToByte(boolArrayRow);
+        /*
         try {
         //Now writing the returning byteArray to the output stream of the
         //tcp socket
@@ -128,11 +130,11 @@ public class PencilPrinter {
         System.out.println("Could not send image to PLC. Se log for details.");
         Logger.getLogger(PencilPrinter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        */
         }
         
         //When done, disconnect
-        tcpClient.disconnect();
+        //tcpClient.disconnect();
         
     }
     
