@@ -116,11 +116,11 @@ public class PencilPrinter {
         //byte[] via byteConvert and send it with tcpClient.write()
         for (int i = 0; i < boolArray.length; i++) {
         boolArrayRow = boolArray[i];
-        
+        /*
         //Printing the boolArray
-            for (int j = 0; j <= 255; j++) {
-                System.out.println("y: "+i+" - x: "+j+": "+boolArray[i][j]);
-            }
+        for (int j = 0; j <= 255; j++) {
+        System.out.println("y: "+i+" - x: "+j+": "+boolArray[i][j]);
+        }*/
         
         //Converting the boolArray
         tmpByte = byteConvert.boolToByte(boolArrayRow);
