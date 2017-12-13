@@ -138,25 +138,33 @@ public class ImageHandler {
                         int green = pixelRGB >> 8 & 255;
                         int blue = pixelRGB & 255;
                         boolArray[y][x] = !(red > threshold && blue > threshold && green > threshold) && (alpha > alphaThreshold);
-                        //System.out.println("op: "+y+", "+x+" - "+boolArray[y][x]);
+                        System.out.println("op: "+y+", "+x+" - "+boolArray[y][x]);
                     }
                 }
             } else {
-                for (int x = 255; x >= 0; x--) {
+                for (int x = 0; x <= 255; x++) {
+                    int xLeft = 255;
                     if (x >= imageWidth) {
                         boolArray[y][x] = false;
                     } else {
-                        int pixelRGB = bufferedImg.getRGB(x, y);
+                        int pixelRGB = bufferedImg.getRGB(xLeft, y);
                         int alpha = pixelRGB >> 24 & 255;
                         int red = pixelRGB >> 16 & 255;
                         int green = pixelRGB >> 8 & 255;
                         int blue = pixelRGB & 255;
                         boolArray[y][x] = !(red > threshold && blue > threshold && green > threshold) && (alpha > alphaThreshold);
-                        //System.out.println("ned: "+y+", "+x+" - "+boolArray[y][x]);
+                        System.out.println("ned: "+y+", "+x+" - "+boolArray[y][x]);
+                        xLeft --;
                     }
 
                 }
-            }
+            }/*
+            for (int i = 0; i <= 255; i++) {
+            System.out.println("y: "+y+" x: "+i+": "+boolArray[y][i]);
+            
+            }*/
+            
+            
         }
         return boolArray;
 

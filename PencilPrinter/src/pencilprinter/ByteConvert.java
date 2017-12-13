@@ -28,8 +28,8 @@ public class ByteConvert {
 
             for (int j = xStep; j < xStep + 8; j++) {
                 
-            //System.out.println(boolArray[j]);
                 hasValue = (boolArray[j]) ? 1 : 0;
+                //System.out.println(j+", "+hasValue);
                 
                 bitInByteNr ++;
                 
