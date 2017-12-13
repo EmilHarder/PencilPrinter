@@ -127,7 +127,7 @@ public class ImageHandler {
         int imageWidth = bufferedImg.getWidth();
         boolean[][] boolArray = new boolean[256][256];
         for (int y = 0; y < imageHeight; y++) {
-            if (!(((y+1)%2)==0)) {
+            if (!((y)%2==0)) {
                 for (int x = 0; x <= 255; x++) {
                     if (x >= imageWidth) {
                         boolArray[y][x] = false;
@@ -138,13 +138,13 @@ public class ImageHandler {
                         int green = pixelRGB >> 8 & 255;
                         int blue = pixelRGB & 255;
                         boolArray[y][x] = !(red > threshold && blue > threshold && green > threshold) && (alpha > alphaThreshold);
-                        System.out.println("op: "+y+", "+x+" - "+boolArray[y][x]);
+                        //System.out.println("op: "+y+", "+x+" - "+boolArray[y][x]);
                     }
                 }
             } else {
-                for (int x = 0; x <= 255; x++) {
                     int xLeft = 255;
-                    if (x >= imageWidth) {
+                for (int x = 0; x <= 255; x++) {
+                    if (xLeft >= imageWidth) {
                         boolArray[y][x] = false;
                     } else {
                         int pixelRGB = bufferedImg.getRGB(xLeft, y);
@@ -153,9 +153,10 @@ public class ImageHandler {
                         int green = pixelRGB >> 8 & 255;
                         int blue = pixelRGB & 255;
                         boolArray[y][x] = !(red > threshold && blue > threshold && green > threshold) && (alpha > alphaThreshold);
-                        System.out.println("ned: "+y+", "+x+" - "+boolArray[y][x]);
-                        xLeft --;
+                        //System.out.println("ned: "+y+", "+x+" - "xLeft+boolArray[y][x]);
                     }
+                    //System.out.println(xLeft);
+                    xLeft --;
 
                 }
             }/*
