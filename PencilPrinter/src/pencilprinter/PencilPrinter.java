@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.io.File;
-import java.util.Arrays;
+import java.io.PrintStream;
 import javax.swing.JFileChooser;
 
 /**
@@ -101,12 +101,15 @@ public class PencilPrinter {
         //Now storing the buffered image in a boolean[][], values determined by
         //the vars resolution, threshold and alphaThreshold
         boolArray = imageHandler.img2BoolArray(imageHandler.resizeImage(resolution, bufferImage), threshold, alphaThreshold);
-        /*
-        for (int i = 0; i < 32; i++){
+        
+        /*for (int i = 0; i < boolArray.length; i++){
+        
         boolArrayRow = boolArray[i];
-        for (int j = 0; j < 64; j++) {
-        System.out.println("i,j="+i+","+j);
-        System.out.println(boolArrayRow[j]);
+        
+        for (int j = 0; j < boolArrayRow.length; j++) {
+        
+        System.out.println("i,j="+i+","+j+" "+boolArrayRow[j]);
+        
         
         }
         }*/
@@ -123,7 +126,15 @@ public class PencilPrinter {
         }*/
         
         //Converting the boolArray
-        tmpByte = byteConvert.boolToByte(boolArrayRow);
+        tmpByte = byteConvert.boolToByte(boolArrayRow); 
+        
+        /*
+        for (int j = 0; j < tmpByte.length; j++) {
+        
+        System.out.println(j+" "+(tmpByte[j] & 0xFF));
+        }
+        */
+            
         
         try {
         

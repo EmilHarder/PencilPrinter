@@ -20,24 +20,27 @@ public class ByteConvert {
 
         for (int i = 0; i < 32; i++) {
 
-            //System.out.println("Byte nr.: "+(i + 1));
+            System.out.println("Byte nr.: "+i);
             
             bitInByteNr = 0;
             finInt = 0;
-            
 
             for (int j = xStep; j < xStep + 8; j++) {
                 
                 hasValue = (boolArray[j]) ? 1 : 0;
-                //System.out.println(j+", "+hasValue);
+                //System.out.println("Index in boolArray "+j+" is: "+hasValue);
+                
+                forInt = (hasValue * ((int) Math.pow(2, bitInByteNr)));
+                
+                finInt += forInt;
+                
+                System.out.println("BitInByte: "+bitInByteNr+" has value: "+forInt);
                 
                 bitInByteNr ++;
                 
-                forInt = (hasValue * ((int) Math.pow(2, bitInByteNr - 1)));
-                finInt += forInt;
-                
-                
             }
+            
+            System.out.println("Final byte value: "+finInt);
 
             arrayToSend[i] = (byte)  finInt;
                 xStep += 8;
