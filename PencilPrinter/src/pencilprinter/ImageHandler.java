@@ -127,7 +127,21 @@ public class ImageHandler {
         int imageWidth = bufferedImg.getWidth();
         boolean[][] boolArray = new boolean[256][256];
         for (int y = 0; y < imageHeight; y++) {
-            if (y % 3 == 0 || y == 1) {
+            if (!(((y+1)%2)==0)) {
+                for (int x = 0; x <= 255; x++) {
+                    if (x >= imageWidth) {
+                        boolArray[y][x] = false;
+                    } else {
+                        int pixelRGB = bufferedImg.getRGB(x, y);
+                        int alpha = pixelRGB >> 24 & 255;
+                        int red = pixelRGB >> 16 & 255;
+                        int green = pixelRGB >> 8 & 255;
+                        int blue = pixelRGB & 255;
+                        boolArray[y][x] = !(red > threshold && blue > threshold && green > threshold) && (alpha > alphaThreshold);
+                        //System.out.println("op: "+y+", "+x+" - "+boolArray[y][x]);
+                    }
+                }
+            } else {
                 for (int x = 255; x >= 0; x--) {
                     if (x >= imageWidth) {
                         boolArray[y][x] = false;
@@ -138,21 +152,7 @@ public class ImageHandler {
                         int green = pixelRGB >> 8 & 255;
                         int blue = pixelRGB & 255;
                         boolArray[y][x] = !(red > threshold && blue > threshold && green > threshold) && (alpha > alphaThreshold);
-                        //    System.out.println("op"+y+pixelRGB);
-                    }
-                }
-            } else {
-                for (int x = 0; x < 255; x++) {
-                    if (x >= imageWidth) {
-                        boolArray[y][x] = false;
-                    } else {
-                        int pixelRGB = bufferedImg.getRGB(x, y);
-                        int alpha = pixelRGB >> 24 & 255;
-                        int red = pixelRGB >> 16 & 255;
-                        int green = pixelRGB >> 8 & 255;
-                        int blue = pixelRGB & 255;
-                        boolArray[y][x] = !(red > threshold && blue > threshold && green > threshold) && (alpha > alphaThreshold);
-                        //System.out.println("ned"+y+pixelRGB);
+                        //System.out.println("ned: "+y+", "+x+" - "+boolArray[y][x]);
                     }
 
                 }
