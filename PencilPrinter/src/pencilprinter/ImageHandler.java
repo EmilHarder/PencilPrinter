@@ -36,7 +36,7 @@ public class ImageHandler {
         }
         try {
             String svg_URI_input = Paths.get(filepath).toUri().toURL().toString();
-            //String svg_URI_input = filepath;
+
             TranscoderInput input_svg_image = new TranscoderInput(svg_URI_input);
 
             try ( //Step-2: Define OutputStream to PNG Image and attach to TranscoderOutput
@@ -48,6 +48,12 @@ public class ImageHandler {
                 my_converter.transcode(input_svg_image, output_png_image);
                 // Step 5- close / flush Output Stream
                 png_ostream.flush();
+
+                /*
+                For later
+                BufferedImage img = ImageIO.read((ImageInputStream) output_png_image);
+                output_png_image.setOutputStream(png_ostream);
+                 */
             }
         } catch (IOException | TranscoderException e) {
             System.out.println(e.toString());
@@ -82,89 +88,88 @@ public class ImageHandler {
      */
     public BufferedImage resizeImage(int desRes, BufferedImage originalImage) {
 
-        System.out.println(originalImage);
-
+        //System.out.println(originalImage);
         double imageHeight = originalImage.getHeight();
         double imageWidth = originalImage.getWidth();
         double resizedImageHeight;
         double resizedImageWidth;
         double ratio;
-        if (imageHeight > imageWidth) {
-            ratio = desRes / (double) imageHeight;
-            resizedImageHeight = ratio * imageHeight;
-            resizedImageWidth = ratio * imageWidth;
-        } else {
-            ratio = desRes / (double) imageWidth;
-            resizedImageWidth = ratio * imageWidth;
-            resizedImageHeight = ratio * imageHeight;
-        }
         BufferedImage resized;
-        if (originalImage.getType() != 0) {
-            resized = new BufferedImage((int) resizedImageWidth, (int) resizedImageHeight, originalImage.getType());
+        if (imageHeight > imageWidth) {
+            ratio = (double) desRes / imageHeight;
+            resizedImageHeight = ratio * imageHeight;
+            resizedImageWidth = ratio * imageWidth;
         } else {
-            resized = new BufferedImage((int) resizedImageWidth, (int) resizedImageHeight, 2);
+            ratio = (double) desRes / imageWidth;
+            resizedImageWidth = ratio * imageWidth;
+            resizedImageHeight = ratio * imageHeight;
         }
-        
-    Graphics2D g = resized.createGraphics();  /*
-    g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-    RenderingHints.VALUE_INTERPOLATION_BILINEAR);  */
-    g.drawImage(originalImage, 0, 0, (int) resizedImageWidth, (int) resizedImageHeight, 0, 0, (int) imageWidth, (int) imageHeight, null);  
-    g.dispose();  
-    
+
+        resized = new BufferedImage((int) resizedImageWidth, (int) resizedImageHeight, 2);
+
+        Graphics2D g = resized.createGraphics();
+        g.drawImage(originalImage, 0, 0, (int) resizedImageWidth, (int) resizedImageHeight, 0, 0, (int) imageWidth, (int) imageHeight, null);
+        g.dispose();
+
         return resized;
     }
 
     /**
      * Method for storing a buffered image as a 2D boolean array.
+     * 
      *
      * @param bufferedImg The buffered image to "convert"
      * @return Returns a boolean[][] with info for each pixel.
      */
-    public boolean[][] img2BoolArray(BufferedImage bufferedImg, int threshold, int alphaThreshold) {
+    public boolean[][] img2BoolArray(int resolution, BufferedImage bufferedImg, int threshold, int alphaThreshold) {
 
         int imageHeight = bufferedImg.getHeight();
         int imageWidth = bufferedImg.getWidth();
-        boolean[][] boolArray = new boolean[256][256];
-        for (int y = 0; y < imageHeight; y++) {
-            if (!((y)%2==0)) {
-                for (int x = 0; x <= 255; x++) {
-                    if (x >= imageWidth) {
-                        boolArray[y][x] = false;
-                    } else {
-                        int pixelRGB = bufferedImg.getRGB(x, y);
-                        int alpha = pixelRGB >> 24 & 255;
-                        int red = pixelRGB >> 16 & 255;
-                        int green = pixelRGB >> 8 & 255;
-                        int blue = pixelRGB & 255;
-                        boolArray[y][x] = !(red > threshold && blue > threshold && green > threshold) && (alpha > alphaThreshold);
-                        //System.out.println("op: "+y+", "+x+" - "+boolArray[y][x]);
+        boolean[][] boolArray = new boolean[resolution][resolution];
+        for (int y = 0; y < resolution; y++) {
+            if (y < imageHeight) {
+                if (y % 2 == 0) {
+                    for (int x = 0; x < resolution; x++) { //Normal reading
+                        if (x < imageWidth) {
+                            int pixelRGB = bufferedImg.getRGB(x, y);
+                            int alpha = pixelRGB >> 24 & 255;
+                            int red = pixelRGB >> 16 & 255;
+                            int green = pixelRGB >> 8 & 255;
+                            int blue = pixelRGB & 255;
+                            boolArray[y][x] = !(red > threshold && blue > threshold && green > threshold) && (alpha > alphaThreshold);
+                            //System.out.println("op: "+y+", "+x+" - "+boolArray[y][x]);
+                        } else {
+                            //Doin nothing - leaving the x-index at false
+                        }
+                    }
+                } else {
+                    int xLeft = (resolution-1);
+                    for (int x = 0; x < resolution; x++) { //Reverse reading
+                        if (xLeft < imageWidth) {
+                            int pixelRGB = bufferedImg.getRGB(xLeft, y);
+                            int alpha = pixelRGB >> 24 & 255;
+                            int red = pixelRGB >> 16 & 255;
+                            int green = pixelRGB >> 8 & 255;
+                            int blue = pixelRGB & 255;
+                            boolArray[y][x] = !(red > threshold && blue > threshold && green > threshold) && (alpha > alphaThreshold);
+                            //System.out.println("ned: "+y+", "+x+" - "xLeft+boolArray[y][x]);
+                        } else {
+                            //Doin nothing - leaving the x-index at false
+                        }
+                        //System.out.println(xLeft);
+                        xLeft--;
+
                     }
                 }
             } else {
-                    int xLeft = 255;
-                for (int x = 0; x <= 255; x++) {
-                    if (xLeft >= imageWidth) {
-                        boolArray[y][x] = false;
-                    } else {
-                        int pixelRGB = bufferedImg.getRGB(xLeft, y);
-                        int alpha = pixelRGB >> 24 & 255;
-                        int red = pixelRGB >> 16 & 255;
-                        int green = pixelRGB >> 8 & 255;
-                        int blue = pixelRGB & 255;
-                        boolArray[y][x] = !(red > threshold && blue > threshold && green > threshold) && (alpha > alphaThreshold);
-                        //System.out.println("ned: "+y+", "+x+" - "xLeft+boolArray[y][x]);
-                    }
-                    //System.out.println(xLeft);
-                    xLeft --;
+                //Doin nothing - leaving the y-index at false
+            }
 
-                }
-            }/*
+            /*
             for (int i = 0; i <= 255; i++) {
             System.out.println("y: "+y+" x: "+i+": "+boolArray[y][i]);
             
             }*/
-            
-            
         }
         return boolArray;
 

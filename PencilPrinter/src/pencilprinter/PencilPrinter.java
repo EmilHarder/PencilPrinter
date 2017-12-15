@@ -11,8 +11,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.io.File;
-import java.io.PrintStream;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;  // TMU
 
 /**
  *
@@ -49,12 +49,12 @@ public class PencilPrinter {
         boolean boolArrayRow[];
         //tmpByte[] holds pixel-information of a row of pixels in bytes
         byte tmpByte[];
-
+        
         //Vars for tcp handling
         //hostName stores the name/IP of the host to connect to as a String
-        String host = "localhost";
+        String host = "192.168.1.30";
         //hostPort stores the port number for the tcp host as a int
-        int hostPort = 4444;
+        int hostPort = 12345;
 
         //Constructors:
         /*
@@ -77,16 +77,19 @@ public class PencilPrinter {
         //image and converting it to a bool[][]
         ImageHandler imageHandler = new ImageHandler();
 
-        //Choosing the file (img) to print. If the file is .svg, it is converted to
-        //a png, and send to readImage. If not, the image is send to readImage.
-        //Should'n we instead just use a buffered image?
+        //Choosing the file (img) to print.
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Bitmap/Vector", "jpg", "jpeg", "svg", "bmp", "png"); //TMU
+        fileChooser.addChoosableFileFilter(filter); // TMU
+        fileChooser.setFileFilter(filter); // TMU
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.showOpenDialog(fileChooser);
 
         inputfile = fileChooser.getSelectedFile();
+        //toLowerCase is a problem for casesensitive file systems (ext* etc)
         filepath = inputfile.getAbsolutePath().toLowerCase();
         filetype = filepath.substring(filepath.lastIndexOf(".") + 1);
-
+        
+        //Could use https://github.com/haraldk/TwelveMonkeys
         if ("svg".equals(filetype)) {
             String pngFilePath = imageHandler.svg2png(filepath);
             bufferImage = imageHandler.readImage(pngFilePath);
@@ -94,15 +97,20 @@ public class PencilPrinter {
             bufferImage = imageHandler.readImage(filepath);
         }
         
-
-        
         //System.out.println(tmpImg);
+        
+        //The image gets resized if its over 256 pixels in height or width
+        if (bufferImage.getHeight() > 256 | bufferImage.getWidth() > 256){
+            BufferedImage bufferImageRes = imageHandler.resizeImage(resolution, bufferImage);
+            bufferImage = bufferImageRes;
+        }
 
         //Now storing the buffered image in a boolean[][], values determined by
         //the vars resolution, threshold and alphaThreshold
-        boolArray = imageHandler.img2BoolArray(imageHandler.resizeImage(resolution, bufferImage), threshold, alphaThreshold);
+        boolArray = imageHandler.img2BoolArray(resolution, bufferImage, threshold, alphaThreshold);
         
-        /*for (int i = 0; i < boolArray.length; i++){
+        /*
+        for (int i = 0; i < boolArray.length; i++){
         
         boolArrayRow = boolArray[i];
         
@@ -112,28 +120,32 @@ public class PencilPrinter {
         
         
         }
-        }*/
+        }
+        */
         
         
         //This for loop traverses each row in boolArray[][], converts it to
         //byte[] via byteConvert and send it with tcpClient.write()
         for (int i = 0; i < boolArray.length; i++) {
         boolArrayRow = boolArray[i];
+        
+        
         /*
         //Printing the boolArray
         for (int j = 0; j <= 255; j++) {
         System.out.println("y: "+i+" - x: "+j+": "+boolArray[i][j]);
         }*/
         
+        
         //Converting the boolArray
         tmpByte = byteConvert.boolToByte(boolArrayRow); 
         
-        /*
-        for (int j = 0; j < tmpByte.length; j++) {
         
+        
+        for (int j = 0; j < tmpByte.length; j++) {
         System.out.println(j+" "+(tmpByte[j] & 0xFF));
         }
-        */
+        /*
             
         
         try {
@@ -156,15 +168,17 @@ public class PencilPrinter {
         
         //System.out.println("return fra boolToByte"+Arrays.toString(tmpByte));
         } catch (IOException ex) {
-        System.out.println("Could not send image to PLC. Se log for details.");
+        System.out.println("Could not send image to PLC. See log for details.");
         Logger.getLogger(PencilPrinter.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        /*
         try {
         Thread.sleep(10);
         } catch (InterruptedException ex) {
         Logger.getLogger(PencilPrinter.class.getName()).log(Level.SEVERE, null, ex);
         }
+        */
         
         }
 
